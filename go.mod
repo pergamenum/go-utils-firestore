@@ -1,4 +1,4 @@
-module go-utils-firestore
+module github.com/pergamenum/go-utils-firestore
 
 go 1.19
 
