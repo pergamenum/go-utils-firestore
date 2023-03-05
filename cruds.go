@@ -3,6 +3,7 @@ package cruds
 import (
 	"context"
 	"errors"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"google.golang.org/grpc/codes"
@@ -38,11 +39,30 @@ func NewCRUDS[Document any](fc *firestore.Client, path string) *CRUDS[Document] 
 
 func (c *CRUDS[Document]) Create(ctx context.Context, id string, document Document) error {
 
-	_, err := c.c.Collection(c.path).Doc(id).Create(ctx, document)
+	now := time.Now()
+
+	d := c.c.Collection(c.path).Doc(id)
+	_, err := d.Create(ctx, document)
 	if err != nil {
 		if status.Code(err) == codes.AlreadyExists {
 			return ErrDocumentAlreadyExists
 		}
+		return err
+	}
+
+	fus := []firestore.Update{
+		{
+			Path:  "created",
+			Value: now,
+		},
+		{
+			Path:  "updated",
+			Value: now,
+		},
+	}
+
+	_, err = d.Update(ctx, fus)
+	if err != nil {
 		return err
 	}
 
@@ -69,6 +89,11 @@ func (c *CRUDS[Document]) Read(ctx context.Context, id string) (Document, error)
 }
 
 func (c *CRUDS[Document]) Update(ctx context.Context, id string, updates []firestore.Update) error {
+
+	updates = append(updates, firestore.Update{
+		Path:  "updated",
+		Value: time.Now(),
+	})
 
 	_, err := c.c.Collection(c.path).Doc(id).Update(ctx, updates)
 	if err != nil {
