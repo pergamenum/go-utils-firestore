@@ -23,7 +23,7 @@ type DAO[Document any] struct {
 
 func NewDAO[Document any](fc *firestore.Client, path string, log *zap.SugaredLogger) *DAO[Document] {
 
-	logNamed := log.Named("go-utils-firestore.DAO")
+	logNamed := log.Named("firestore.DAO")
 
 	return &DAO[Document]{
 		c:    fc,
@@ -40,7 +40,7 @@ func (c *DAO[Document]) Create(ctx context.Context, id string, document Document
 	_, err := d.Create(ctx, document)
 	if err != nil {
 		if status.Code(err) == codes.AlreadyExists {
-			cause := fmt.Sprintf("document{%s} already exists", id)
+			cause := fmt.Sprintf("(document '%s' already exists)", id)
 			return e.Wrap(cause, e.ErrConflict)
 		}
 		return err
@@ -70,7 +70,7 @@ func (c *DAO[Document]) Read(ctx context.Context, id string) (Document, error) {
 	snapshot, err := c.c.Collection(c.path).Doc(id).Get(ctx)
 	if err != nil {
 		if !snapshot.Exists() {
-			cause := fmt.Sprintf("ID: %s", id)
+			cause := fmt.Sprintf("(ID: %s)", id)
 			return c.empty, e.Wrap(cause, e.ErrNotFound)
 		}
 		return c.empty, err
@@ -79,7 +79,7 @@ func (c *DAO[Document]) Read(ctx context.Context, id string) (Document, error) {
 	var d Document
 	err = snapshot.DataTo(&d)
 	if err != nil {
-		cause := fmt.Sprint("firestore serialization failed: ", err.Error())
+		cause := fmt.Sprintf("(firestore serialization failed: %s)", err.Error())
 		return c.empty, e.Wrap(cause, e.ErrCorrupt)
 	}
 
@@ -138,7 +138,7 @@ func (c *DAO[Document]) Search(ctx context.Context, queries []t.Query) ([]Docume
 		snapshots, err = fsq.Documents(ctx).GetAll()
 		if err != nil {
 			if status.Code(err) == codes.FailedPrecondition {
-				cause := "query not supported: combining (==) with (!=, <, <=, >, >=)"
+				cause := "(query not supported: combining '==' with '!= <, <=, >, >=')"
 				return nil, e.Wrap(cause, e.ErrBadRequest)
 			}
 			return nil, err
@@ -151,7 +151,7 @@ func (c *DAO[Document]) Search(ctx context.Context, queries []t.Query) ([]Docume
 		err = s.DataTo(&d)
 		if err != nil {
 			// Log corrupt snapshots as errors and then continue.
-			cause := fmt.Sprint("firestore serialization failed: ", err.Error())
+			cause := fmt.Sprintf("(firestore serialization failed: %s)", err.Error())
 			wrapped := e.Wrap(cause, e.ErrCorrupt)
 			log.With("snapshot", s).
 				Error(wrapped)
