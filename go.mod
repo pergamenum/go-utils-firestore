@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	cloud.google.com/go/firestore v1.9.0
-	github.com/pergamenum/go-consensus-standards v0.3.1
+	github.com/pergamenum/go-consensus-standards v0.4.3
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.53.0
 )

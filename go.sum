@@ -52,8 +52,8 @@ github.com/googleapis/enterprise-certificate-proxy v0.2.0 h1:y8Yozv7SZtlU//QXbez
 github.com/googleapis/enterprise-certificate-proxy v0.2.0/go.mod h1:8C0jb7/mgJe/9KK8Lm7X9ctZC2t60YyIpYEI16jx0Qg=
 github.com/googleapis/gax-go/v2 v2.7.0 h1:IcsPKeInNvYi7eqSaDjiZqDDKu5rsmunY0Y1YupQSSQ=
 github.com/googleapis/gax-go/v2 v2.7.0/go.mod h1:TEop28CZZQ2y+c0VxMUmu1lV+fQx57QpBWsYpwqHJx8=
-github.com/pergamenum/go-consensus-standards v0.3.1 h1:I9PNTk1ycEDw1ASIMoVpTud70J+XtRim5AC2rUawoQU=
-github.com/pergamenum/go-consensus-standards v0.3.1/go.mod h1:4fqHOaR278Fe9ZuQiHJ/nzroYZ5gJAH+BrcEPdatdEY=
+github.com/pergamenum/go-consensus-standards v0.4.3 h1:svWz8vuutpHN//35BYOpVgxLJHrTtV20S1L2PxM+WdY=
+github.com/pergamenum/go-consensus-standards v0.4.3/go.mod h1:4fqHOaR278Fe9ZuQiHJ/nzroYZ5gJAH+BrcEPdatdEY=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
